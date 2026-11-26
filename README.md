@@ -38,25 +38,26 @@
 
 1. Установить OpenCode: `npm install -g opencode-ai` (или по инструкции с opencode.ai).
 2. Скачать этот репозиторий (кнопка **Code → Download ZIP**) и распаковать.
-3. Скопировать содержимое в папку конфига OpenCode:
-   - `C:\Users\<имя>\.config\opencode\`
-   - скопировать папки `prompts`, `skills`, `templates`, `scripts` **поверх** (не удаляя существующие файлы);
-   - НЕ перезаписывать свой `opencode.json` целиком - вставить секции из `opencode.example.json` (см. ниже).
+3. Скопировать содержимое в папку конфига OpenCode `C:\Users\<имя>\.config\opencode\`:
+   - скопировать папки `prompts`, `skills`, `templates`, `scripts` **поверх** (существующие файлы не удалять);
+   - `opencode.json` не перезаписывать целиком - вставить секции из `opencode.example.json` (см. ниже).
 4. Создать `.env` в `C:\Users\<имя>\.config\opencode\`:
    ```
    ROUTERAI_API_KEY=свой_ключ_с_routerai.ru
    ```
-5. Развернуть рабочую папку проекта:
-   ```powershell
-   powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\<имя>\.config\opencode\scripts\init-1c-project.ps1 -ProjectPath "D:\work\ваш-проект"
-   ```
-6. Перезапустить OpenCode. Проверить:
+5. Перезапустить OpenCode. Проверить, что агенты и модели на месте:
    ```powershell
    opencode models | Select-String routerai
    opencode debug agents
    ```
-   Должны появиться 4 агента `1c-*` и две модели RouterAI.
-7. В окне OpenCode: `Tab` -> `1c-architect`.
+   Должны быть 4 агента `1c-*` (`1c-architect`, `1c-scout`, `1c-coder`, `1c-tester`) и две модели RouterAI.
+6. Создать ярлык на рабочем столе:
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\<имя>\.config\opencode\scripts\create-shortcut.ps1
+   ```
+7. Запустить ярлык **1С-архитектор**: при первом запуске спросит путь к проекту, сама развернёт `project/` и откроет OpenCode. В нём - `Tab` -> `1c-architect`.
+
+Подробный порядок для человека без программирования - `1C-АГЕНТ-ИНСТРУКЦИЯ.md`.
 
 ---
 
@@ -114,7 +115,7 @@ node scripts\cost-report.cjs --md           # таблица markdown
 prompts/            1c-architect, 1c-scout, 1c-coder, 1c-tester, 1c-manual-steps
 skills/             навыки 1С (метаданные, сборка, QA, UI, каталог MCP)
 templates/1c-project/  шаблон рабочей папки project/
-scripts/            init-1c-project.ps1, add-mcp.cjs, cost-report.cjs, prices.routerai.json
+scripts/            init-1c-project.ps1, 1c-agent.ps1, create-shortcut.ps1, add-mcp.cjs, cost-report.cjs, prices.routerai.json
 opencode.example.json  фрагмент конфига
 1C-АГЕНТ-ИНСТРУКЦИЯ.md инструкция для человека
 ```
