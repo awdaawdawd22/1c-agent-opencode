@@ -87,7 +87,20 @@ node C:\Users\<имя>\.config\opencode\scripts\add-mcp.cjs gyrfalcon -- "%LOCAL
 
 ---
 
-## Затраты
+## Запуск с рабочего стола
+
+Ярлык **1С-архитектор** создаётся один раз:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\<имя>\.config\opencode\scripts\create-shortcut.ps1
+```
+
+Что делает ярлык:
+
+1. Спрашивает путь к проекту (один раз, потом запоминает в `scripts\.1c-agent-state.json`).
+2. Если в проекте нет папки `project/` - разворачивает её из шаблона.
+3. Проверяет, что в `.env` есть `ROUTERAI_API_KEY`, и предупреждает, если нет.
+4. Открывает OpenCode в папке проекта. Дальше - `Tab` -> `1c-architect`.
 
 ```powershell
 node scripts\cost-report.cjs                # всё время
