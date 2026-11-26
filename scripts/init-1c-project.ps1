@@ -14,7 +14,7 @@ chcp 65001 | Out-Null
 
 $template = Join-Path (Split-Path -Parent $PSScriptRoot) 'templates\1c-project'
 if (-not (Test-Path $template)) {
-    throw "не найден шаблон: $template"
+    throw "template not found: $template"
 }
 if (-not (Test-Path $ProjectPath)) {
     New-Item -ItemType Directory -Path $ProjectPath -Force | Out-Null
@@ -55,13 +55,11 @@ foreach ($dir in @('qa', 'logs', 'dumps')) {
     }
 }
 
-Write-Output "проект: $ProjectPath"
-Write-Output "папка : $target"
+Write-Output "project: $ProjectPath"
+Write-Output "folder : $target"
 foreach ($item in $created) { Write-Output "  + $item" }
-foreach ($item in $skipped) { Write-Output "  = $item (уже есть, не тронут)" }
+foreach ($item in $skipped) { Write-Output "  = $item (already there, skipped)" }
 
-$previous = $ErrorActionPreference
-$ErrorActionPreference = 'Continue'
 $agents = Join-Path $ProjectPath 'AGENTS.md'
 $block = @"
 ## Рабочая папка проекта
@@ -72,10 +70,12 @@ $block = @"
 "@
 if (-not (Test-Path $agents)) {
     Set-Content -Path $agents -Value "# AGENTS.md`r`n`r`n$block" -Encoding UTF8
-    Write-Output "  + AGENTS.md (создан с блоком про project/)"
-} elseif (-not (Select-String -Path $agents -Pattern 'Рабочая папка проекта' -Quiet)) {
+    Write-Output "  + AGENTS.md (created with project/ block)"
+}
+elseif (-not (Select-String -Path $agents -Pattern 'Рабочая папка проекта' -Quiet)) {
     Add-Content -Path $agents -Value "`r`n$block" -Encoding UTF8
-    Write-Output "  + AGENTS.md (дописан блок про project/)"
-} else {
-    Write-Output "  = AGENTS.md (блок уже есть)"
+    Write-Output "  + AGENTS.md (project/ block appended)"
+}
+else {
+    Write-Output "  = AGENTS.md (block already present)"
 }

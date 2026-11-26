@@ -55,7 +55,7 @@ $env:OPENCODE_CONFIG_DIR = $configDir
 $state = Read-State
 
 if ($ProjectPath) {
-    $ProjectPath = $ProjectPath.Trim('"', ' ')
+    $ProjectPath = $ProjectPath.Trim().Trim('"').Trim()
     Write-Host "Проект: $ProjectPath" -ForegroundColor DarkGray
 }
 elseif ($state.project -and (Test-Path $state.project)) {
@@ -66,7 +66,7 @@ elseif ($state.project -and (Test-Path $state.project)) {
 else {
     do {
         $answer = Read-Host 'Введите путь к папке 1С-проекта (например D:\work\мой-проект)'
-        $ProjectPath = $answer.Trim('"', ' ')
+        $ProjectPath = $answer.Trim().Trim('"').Trim()
     } while (-not $ProjectPath)
 }
 
@@ -92,7 +92,14 @@ if ($Remember -or $state.project -ne $ProjectPath) {
 $projectDir = Join-Path $ProjectPath 'project'
 if (-not (Test-Path $projectDir)) {
     Write-Host 'Рабочей папки project/ нет - разворачиваю шаблон...' -ForegroundColor Cyan
-    & (Join-Path $configDir 'scripts\init-1c-project.ps1') -ProjectPath $ProjectPath
+    $initScript = Join-Path $configDir 'scripts\init-1c-project.ps1'
+    & $initScript -ProjectPath $ProjectPath
+    if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne $null) {
+        Fail "Шаблон project/ не развернулся (код $LASTEXITCODE). Скрипт: $initScript"
+    }
+    if (-not (Test-Path (Join-Path $projectDir 'context.md'))) {
+        Fail "После запуска шаблона нет файла $projectDir\context.md - смотрите ошибки выше."
+    }
     Write-Host ''
 }
 
@@ -116,6 +123,6 @@ Write-Host ''
 
 opencode
 
-if ($LASTEXITCODE -ne 0) {
+if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne $null) {
     Fail "OpenCode завершился с кодом $LASTEXITCODE"
 }

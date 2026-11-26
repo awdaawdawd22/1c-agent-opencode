@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1С-архитектор — инструкция</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b313d;
+  --text:#e6e9ef; --dim:#9aa4b2; --accent:#f0b429; --ok:#3ecf8e; --bad:#ef6b6b; --code:#0b0d11;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--text); line-height:1.6;
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+.layout{display:grid; grid-template-columns:280px 1fr; min-height:100vh}
+nav{
+  position:sticky; top:0; align-self:start; height:100vh; overflow:auto;
+  background:var(--panel); border-right:1px solid var(--line); padding:20px 16px;
+}
+nav h1{font-size:16px; margin:0 0 4px; letter-spacing:.2px}
+nav .sub{font-size:12px; color:var(--dim); margin-bottom:18px}
+nav a{display:block; color:var(--dim); text-decoration:none; font-size:14px; padding:6px 8px; border-radius:6px}
+nav a:hover{background:var(--panel2); color:var(--text)}
+nav a.active{color:var(--accent); background:var(--panel2)}
+main{padding:40px 48px 120px; max-width:920px}
+h2{font-size:26px; margin:48px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line)}
+h2:first-child{margin-top:0}
+h3{font-size:18px; margin:28px 0 8px}
+p{margin:10px 0}
+.lead{font-size:18px; color:var(--dim); margin-bottom:28px}
+code,pre{font-family:"Cascadia Code",Consolas,monospace; font-size:14px}
+code{background:var(--panel2); padding:2px 6px; border-radius:4px; color:#ffd479}
+pre{background:var(--code); border:1px solid var(--line); border-radius:10px; padding:16px; overflow:auto; position:relative; color:#cfe3ff}
+pre code{background:none; padding:0; color:inherit}
+.copy{position:absolute; top:8px; right:8px; background:var(--panel2); color:var(--dim); border:1px solid var(--line); border-radius:6px; font-size:12px; padding:4px 8px; cursor:pointer}
+.copy:hover{color:var(--text); border-color:var(--accent)}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin:16px 0}
+.card.warn{border-color:#6b4a12; background:#1b1710}
+.card.ok{border-color:#1f5c40; background:#0f1a15}
+.steps{counter-reset:s; list-style:none; padding:0; margin:20px 0}
+.steps>li{counter-increment:s; position:relative; padding:14px 0 14px 52px; border-bottom:1px dashed var(--line)}
+.steps>li:last-child{border-bottom:none}
+.steps>li::before{
+  content:counter(s); position:absolute; left:0; top:12px; width:32px; height:32px; border-radius:50%;
+  background:var(--accent); color:#14161a; font-weight:700; display:grid; place-items:center;
+}
+table{width:100%; border-collapse:collapse; margin:16px 0; font-size:14px}
+th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top}
+th{background:var(--panel2); font-weight:600}
+td code{white-space:nowrap}
+.check{list-style:none; padding:0}
+.check li{padding:8px 0 8px 30px; position:relative; border-bottom:1px solid var(--line)}
+.check li::before{content:"☐"; position:absolute; left:4px; color:var(--dim)}
+.tag{display:inline-block; font-size:12px; padding:1px 8px; border-radius:999px; border:1px solid var(--line); color:var(--dim); margin-left:6px}
+.tag.ok{color:var(--ok); border-color:#1f5c40}
+.tag.bad{color:var(--bad); border-color:#5c1f1f}
+.faq{border:1px solid var(--line); border-radius:10px; margin:8px 0; overflow:hidden; background:var(--panel)}
+.faq summary{cursor:pointer; padding:12px 16px; font-weight:600}
+.faq div{padding:0 16px 14px; color:var(--dim)}
+kbd{background:#262b35; border:1px solid #39404d; border-bottom-width:2px; border-radius:5px; padding:1px 7px; font-size:13px; font-family:inherit}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  nav{position:static; height:auto}
+  main{padding:24px 18px 80px}
+  .grid2{grid-template-columns:1fr}
+}
+.muted{color:var(--dim)}
+a{color:#8fb8ff}
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--line); color:var(--dim); font-size:13px}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav>
+  <h1>1С-архитектор</h1>
+  <div class="sub">инструкция · OpenCode · 1С 8.3</div>
+  <a href="#start">1. Быстрый старт</a>
+  <a href="#need">2. Что нужно до начала</a>
+  <a href="#how">3. Как он работает</a>
+  <a href="#dialog">4. Что он спросит</a>
+  <a href="#result">5. Что получите</a>
+  <a href="#verify">6. Как проверить</a>
+  <a href="#money">7. Затраты в рублях</a>
+  <a href="#folder">8. Папка project/</a>
+  <a href="#boundaries">9. Границы и безопасность</a>
+  <a href="#newpc">10. Другой компьютер</a>
+  <a href="#faq">11. Если сломалось</a>
+  <a href="#cheat">12. Шпаргалка</a>
+</nav>
+
+<main>
+  <h2 id="start">1. Быстрый старт</h2>
+  <p class="lead">Одна задача: открыть агента, написать, что нужно, ответить на вопросы, получить проверенный результат и сумму затрат.</p>
+
+  <ol class="steps">
+    <li>
+      <b>Откройте ярлык «1С-архитектор» на рабочем столе.</b><br>
+      <span class="muted">Если ярлыка нет — создайте один раз:</span>
+      <pre><code>powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\awd22\.config\opencode\scripts\create-shortcut.ps1</code></pre>
+    </li>
+    <li>
+      <b>Введите путь к папке проекта.</b><br>
+      Например: <code>D:\Работа\осьминог\ООО СЕМАКС МЕТАЛЛ</code><br>
+      <span class="muted">Кавычки-«ёлочки» и обычные кавычки скрипт срезает сам. Путь запоминается — второй раз не спросит.</span>
+    </li>
+    <li>
+      <b>Дождитесь сообщения «Готово».</b> Первый запуск сам создаёт рабочую папку <code>project/</code> внутри проекта.
+    </li>
+    <li>
+      <b>В окне OpenCode нажмите <kbd>Tab</kbd> и выберите <code>1c-architect</code></b>, затем <kbd>Enter</kbd>.
+    </li>
+    <li>
+      <b>Напишите задачу простыми словами.</b> Например:
+      <pre><code>В проекте лежит ТЗ. Сначала проведи аудит того, что уже сделано,
+потом задай вопросы и покажи план с оценкой.</code></pre>
+    </li>
+    <li>
+      <b>Ответьте на вопросы и напишите «делай».</b> До этого он ничего не меняет — это специально.
+    </li>
+    <li>
+      <b>Получите таблицу приёмки, затраты в рублях и путь к результату.</b>
+    </li>
+  </ol>
+
+  <div class="card warn">
+    <b>Если модель молчит</b> — нет ключа. Откройте <code>C:\Users\awd22\.config\opencode\.env</code>, впишите после <code>ROUTERAI_API_KEY=</code> свой ключ с routerai.ru, перезапустите ярлык.
+  </div>
+
+  <h2 id="need">2. Что нужно до начала</h2>
+  <table>
+    <tr><th>Что</th><th>Зачем</th><th>Где взять</th></tr>
+    <tr><td>Ключ RouterAI</td><td>без него модели не отвечают</td><td>личный кабинет routerai.ru → в <code>.env</code></td></tr>
+    <tr><td>Тестовая база 1С</td><td>туда заливается расширение для проверки</td><td>создать в Конфигураторе пустую</td></tr>
+    <tr><td>ТЗ файлом в проекте</td><td>чтобы понять, что вы хотите</td><td>ваша рабочая папка, например <code>docs/тз.md</code></td></tr>
+    <tr><td>Выгрузка типовой в <code>base_src/</code></td><td>чтобы не ломать типовую конфигурацию</td><td>Конфигуратор → «Выгрузить конфигурацию в файлы»</td></tr>
+    <tr><td>Путь к платформе</td><td>сборка через <code>1cv8.exe</code></td><td><code>C:\Program Files\1cv8\8.3.x\bin</code></td></tr>
+  </table>
+  <p class="muted">Полный список ручной работы агент сам выдаст по просьбе «прочитай мне ручные шаги» (файл <code>prompts/1c-manual-steps.md</code>).</p>
+
+  <h2 id="how">3. Как он работает</h2>
+  <p>Порядок жёсткий, обойти нельзя:</p>
+  <div class="grid2">
+    <div class="card"><b>1. Аудит</b><br><span class="muted">Субагент <code>1c-scout</code> смотрит, что уже есть в проекте и базе. Проект мог бросить другой ИИ — ничего рабочего не сносится без доказательства.</span></div>
+    <div class="card"><b>2. Вопросы и план</b><br><span class="muted">Что понял, до 5 вопросов с вариантом по умолчанию, план с рисками и оценкой. И стоп — ждёт вашего «делай».</span></div>
+    <div class="card"><b>3. Работа</b><br><span class="muted"><code>1c-coder</code> пишет XML и BSL, <code>1c-tester</code> собирает расширение и прокликивает сценарий в живом окне 1С.</span></div>
+    <div class="card"><b>4. Приёмка по галочкам</b><br><span class="muted">Галочка ставится только при наличии артефакта: лог, код возврата, путь к скриншоту, цифра. Нет артефакта — ❌.</span></div>
+  </div>
+
+  <h2 id="dialog">4. Что он спросит</h2>
+  <p>Пример ответа агента:</p>
+  <pre><code>Что понял: нужна доработка закрытия месяца с расчётом резерва.
+
+Вопросы:
+1) Резерв считаем по всем договорам или только по просроченным?
+   рекомендую: по всем, с признаком просрочки в отчёте.
+2) Префикс объектов: оставить АС_ или свой?
+3) Куда выводить результат: отчёт СКД или заполнение документа?
+
+Предложение:
+- регистр сведений «Резервы» + подписка на проведение;
+- отчёт СКД;
+риски: если в ТЗ нет формулы, цифры не сойдутся — нужна ваша формула;
+оценка: 3 шага, ~15–25 ₽.</code></pre>
+  <p>Отвечайте как в переписке: <code>1 — по всем, 2 — АС_, 3 — отчёт, делай</code>.</p>
+  <p>Не хотите разбираться: <code>бери рекомендации по умолчанию и делай</code>.</p>
+
+  <h2 id="result">5. Что получите</h2>
+  <table>
+    <tr><th>Блок</th><th>Содержимое</th></tr>
+    <tr><td>Таблица приёмки</td><td>пункт / доказательство / ✅ или ❌, с путями к логам и скриншотам</td></tr>
+    <tr><td>Затраты</td><td>модель, вызовов, токены (вход/выход/кэш), рубли, итог</td></tr>
+    <tr><td>Ручные шаги</td><td>что нельзя сделать агентом: поддержка, хранилище, рабочая база</td></tr>
+    <tr><td>Путь к результату</td><td>готовый <code>.cfe</code> и где он лежит</td></tr>
+  </table>
+
+  <h2 id="verify">6. Как проверить, что не соврал</h2>
+  <ul class="check">
+    <li>Спросите <b>«покажи лог сборки»</b>. Нужен путь к логу и код возврата <code>0</code>. Нет — не собирал.</li>
+    <li>Спросите <b>«покажи скриншоты»</b> и откройте <code>project/qa/&lt;дата&gt;/</code> сами. Пусто — не проверял.</li>
+    <li>Откройте <code>project/journal.md</code>. Агент говорит «работал», а журнал пустой — работа наполовину.</li>
+    <li>Говорит «сделано», а в <code>git diff</code> нет файлов — не сделано.</li>
+  </ul>
+  <div class="card ok">
+    Честный ответ <b>«не проверено, причина такая»</b> — нормальный. Ответ «всё работает» без артефактов — повод перепроверить.
+  </div>
+
+  <h2 id="money">7. Затраты в рублях</h2>
+  <p>Агент сам добавляет блок затрат в отчёт. Отдельно можно посмотреть в любой момент:</p>
+  <pre><code>node C:\Users\awd22\.config\opencode\scripts\cost-report.cjs --today</code></pre>
+  <table>
+    <tr><th>Ключ</th><th>Что показывает</th></tr>
+    <tr><td><code>--today</code></td><td>только сегодня</td></tr>
+    <tr><td><code>--session &lt;id&gt;</code></td><td>одна задача</td></tr>
+    <tr><td><code>--md</code></td><td>таблица для журнала проекта</td></tr>
+    <tr><td><code>--provider routerai</code></td><td>только RouterAI</td></tr>
+  </table>
+  <p class="muted">Цены в <code>scripts/prices.routerai.json</code>, в рублях за 1 млн токенов. RouterAI поменял тариф — поправьте числа там, пересчёт сразу новый.</p>
+
+  <h2 id="folder">8. Папка project/ — всё о проекте</h2>
+  <p>Создаётся в корне вашего 1С-проекта при первом запуске.</p>
+  <table>
+    <tr><th>Файл</th><th>Что там</th></tr>
+    <tr><td><code>context.md</code></td><td>конфигурация, префикс, базы, где остановились</td></tr>
+    <tr><td><code>rules.md</code></td><td>правила именно этого проекта</td></tr>
+    <tr><td><code>environment.md</code></td><td>путь 1С, версия, MCP, что проверено</td></tr>
+    <tr><td><code>taskboard.md</code></td><td>пункты ТЗ и матрица готовности</td></tr>
+    <tr><td><code>journal.md</code></td><td>хронология работы с артефактами</td></tr>
+    <tr><td><code>decisions.md</code></td><td>принятые решения и кто утвердил</td></tr>
+    <tr><td><code>checks.md</code></td><td>чек-листы приёмки по задачам</td></tr>
+    <tr><td><code>qa/&lt;дата&gt;/</code></td><td>скриншоты из 1С</td></tr>
+    <tr><td><code>logs/</code></td><td>логи сборки</td></tr>
+    <tr><td><code>dumps/</code></td><td><code>.cfe</code>, копии <code>.dt</code></td></tr>
+    <tr><td><code>manual/</code></td><td>пакеты для ручного внесения в Конфигуратор</td></tr>
+  </table>
+
+  <h2 id="boundaries">9. Границы и безопасность</h2>
+  <div class="grid2">
+    <div class="card">
+      <b>Где работает</b>
+      <p class="muted">Проект — это норма. Наружу (поиск, документация, чужие репозитории) — только когда в проекте этих данных нет.</p>
+    </div>
+    <div class="card">
+      <b>Что не уходит наружу</b>
+      <p class="muted">Код клиента, фрагменты выгрузки, контрагенты, цифры, пароли, ключи. Запросы формулируются обобщённо.</p>
+    </div>
+    <div class="card">
+      <b>Секреты</b>
+      <p class="muted">Только в <code>.env</code>. В коде, логах, <code>project/</code> и коммитах — никогда.</p>
+    </div>
+    <div class="card">
+      <b>Необратимое</b>
+      <p class="muted">Рабочая база, <code>git push</code>, <code>reset --hard</code>, удаление кода — только с вашего «да».</p>
+    </div>
+  </div>
+
+  <h2 id="newpc">10. Другой компьютер</h2>
+  <ol class="steps">
+    <li>Установить OpenCode: <code>npm install -g opencode-ai</code></li>
+    <li>Скачать репозиторий <a href="https://github.com/awdaawdawd22/1c-agent-opencode" target="_blank" rel="noopener">1c-agent-opencode</a> (Code → Download ZIP).</li>
+    <li>Скопировать <code>prompts</code>, <code>skills</code>, <code>templates</code>, <code>scripts</code> в <code>C:\Users\&lt;имя&gt;\.config\opencode\</code> поверх.</li>
+    <li>Вставить секции провайдера и агентов из <code>opencode.example.json</code> в свой <code>opencode.json</code>.</li>
+    <li>Вписать <code>ROUTERAI_API_KEY</code> в <code>.env</code>.</li>
+    <li>Создать ярлык: <code>scripts\create-shortcut.ps1</code>. Перезапустить OpenCode.</li>
+  </ol>
+
+  <h2 id="faq">11. Если сломалось</h2>
+  <details class="faq"><summary>Агента нет в Tab</summary><div>Перезапустите OpenCode. Проверьте: <code>opencode debug agents</code> — должно быть четыре <code>1c-*</code>.</div></details>
+  <details class="faq"><summary>Ошибка кодировки в скрипте (кракозябры, «отсутствует завершающий символ»)</summary><div>Скрипт сохранён без BOM или повреждён. Возьмите свежий из репозитория и запускайте так: <code>powershell -NoProfile -ExecutionPolicy Bypass -File &lt;путь&gt;</code>.</div></details>
+  <details class="faq"><summary>Модель не отвечает</summary><div>Пустой <code>ROUTERAI_API_KEY</code> или нет баланса на routerai.ru.</div></details>
+  <details class="faq"><summary>Слишком дорого</summary><div>Скажите: «ответы по умолчанию, дальше сам» — он перестанет водить вас по вопросам. Субагенты на DeepSeek стоят копейки, дорогой только архитектор на Sonnet.</div></details>
+  <details class="faq"><summary>Полез в рабочую базу</summary><div>Остановите: «не трогай рабочую, только тестовая». В <code>project/context.md</code> укажите тестовую базу — он читает её перед работой.</div></details>
+  <details class="faq"><summary>Завис на синтаксисе</summary><div>Напишите: «покажи, что уже успел, и остановись». Затем дайте текст ошибки и лог.</div></details>
+  <details class="faq"><summary>Хочу другой проект</summary><div>Удалите <code>C:\Users\awd22\.config\opencode\scripts\.1c-agent-state.json</code> или запустите скрипт с <code>-ProjectPath "D:\другой"</code>.</div></details>
+
+  <h2 id="cheat">12. Шпаргалка</h2>
+  <table>
+    <tr><th>Задача</th><th>Команда или фраза</th></tr>
+    <tr><td>Доработка 1С</td><td><kbd>Tab</kbd> → <code>1c-architect</code> → задача словами</td></tr>
+    <tr><td>Аудит брошенного проекта</td><td>«Проведи аудит сделанного и покажи план»</td></tr>
+    <tr><td>Затраты сегодня</td><td><code>node scripts\cost-report.cjs --today</code></td></tr>
+    <tr><td>Развернуть project/ вручную</td><td><code>powershell -File scripts\init-1c-project.ps1 -ProjectPath "…"</code></td></tr>
+    <tr><td>Создать ярлык</td><td><code>powershell -File scripts\create-shortcut.ps1</code></td></tr>
+    <tr><td>Добавить MCP</td><td><code>node scripts\add-mcp.cjs имя -- команда</code></td></tr>
+    <tr><td>Проверить агентов</td><td><code>opencode debug agents</code></td></tr>
+    <tr><td>Проверить модели</td><td><code>opencode models | Select-String routerai</code></td></tr>
+  </table>
+
+  <footer>
+    Репозиторий: <a href="https://github.com/awdaawdawd22/1c-agent-opencode" target="_blank" rel="noopener">awdaawdawd22/1c-agent-opencode</a> · файлы инструкции: <code>1C-АГЕНТ-ИНСТРУКЦИЯ.md</code>, <code>SKILL_INDEX.md</code> · ярлык: «1С-архитектор» на рабочем столе.
+  </footer>
+</main>
+</div>
+
+<script>
+(function () {
+  // Подсветка активного раздела
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav a'));
+  var sections = links
+    .map(function (a) { return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+
+  function onScroll() {
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s.offsetTop <= pos) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Кнопка "копировать" у блоков кода
+  document.querySelectorAll('pre').forEach(function (pre) {
+    var btn = document.createElement('button');
+    btn.className = 'copy';
+    btn.type = 'button';
+    btn.textContent = 'копировать';
+    btn.addEventListener('click', function () {
+      var text = pre.querySelector('code').innerText;
+      var done = function () {
+        btn.textContent = 'скопировано';
+        setTimeout(function () { btn.textContent = 'копировать'; }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { btn.textContent = 'не вышло'; });
+      } else {
+        var area = document.createElement('textarea');
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = 'не вышло'; }
+        document.body.removeChild(area);
+      }
+    });
+    pre.appendChild(btn);
+  });
+
+  // Открытие пунктов меню без скачка при первом клике
+  links.forEach(function (a) {
+    a.addEventListener('click', function () {
+      links.forEach(function (l) { l.classList.remove('active'); });
+      a.classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
