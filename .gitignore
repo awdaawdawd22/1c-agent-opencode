@@ -1,0 +1,33 @@
+# Зависимости и артефакты
+node_modules/
+*.log
+logs/
+dumps/
+qa/
+.opencode/
+temporary/
+
+# Секреты и локальные конфиги
+.env
+.env.local
+*.key
+*.pem
+secrets*
+opencode.json
+
+# Бэкапы и мусор
+*.bak
+*.pre-*.bak
+*.pre-*-orchestrator.bak
+*.pre-add-mcp.bak
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Индексы 1С
+*.db
+*.db-shm
+*.db-wal
+*.dt
+*.cfe
+*.cf

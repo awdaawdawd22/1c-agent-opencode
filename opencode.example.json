@@ -1,0 +1,98 @@
+{
+  "provider": {
+    "routerai": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "RouterAI",
+      "options": {
+        "baseURL": "https://routerai.ru",
+        "apiKey": "{env:ROUTERAI_API_KEY}"
+      },
+      "models": {
+        "anthropic/claude-sonnet-5.5": {
+          "name": "Claude Sonnet 5.5",
+          "attachment": true,
+          "reasoning": true,
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 8000
+            }
+          }
+        },
+        "deepseek/deepseek-v4.1-flash-1017": {
+          "name": "DeepSeek V4.1 Flash 1017",
+          "attachment": true,
+          "reasoning": true,
+          "limit": {
+            "context": 1000000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "agent": {
+    "1c-architect": {
+      "mode": "primary",
+      "description": "Главный архитектор 1С (Sonnet 5.5): аудит сделанного, вопросы и оценка до старта, распределение задач по субагентам, приёмка по галочкам",
+      "model": "routerai/anthropic/claude-sonnet-5.5",
+      "prompt": "{file:./prompts/1c-architect.md}",
+      "permission": {
+        "task": {
+          "*": "allow"
+        },
+        "bash": "allow",
+        "question": "allow"
+      }
+    },
+    "1c-scout": {
+      "mode": "subagent",
+      "description": "Аудитор и разведчик 1С (DeepSeek): проверка сделанного по ТЗ, поиск по выгрузке, установка MCP и навыков",
+      "model": "routerai/deepseek/deepseek-v4.1-flash-1017",
+      "prompt": "{file:./prompts/1c-scout.md}",
+      "permission": {
+        "bash": "allow"
+      }
+    },
+    "1c-coder": {
+      "mode": "subagent",
+      "description": "Разработчик рутины 1С (DeepSeek): XML-метаданные, формы, роли, макеты и BSL-заготовки",
+      "model": "routerai/deepseek/deepseek-v4.1-flash-1017",
+      "prompt": "{file:./prompts/1c-coder.md}",
+      "permission": {
+        "bash": "allow"
+      }
+    },
+    "1c-tester": {
+      "mode": "subagent",
+      "description": "QA-бот 1С (DeepSeek со зрением): сборка через DESIGNER, тесты в окнах 1С, проверка скриншотов",
+      "model": "routerai/deepseek/deepseek-v4.1-flash-1017",
+      "prompt": "{file:./prompts/1c-tester.md}",
+      "permission": {
+        "bash": "allow"
+      }
+    }
+  }
+}

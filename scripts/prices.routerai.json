@@ -1,0 +1,24 @@
+{
+  "_comment": "Цены RouterAI в рублях за 1 млн токенов. Источник - карточки моделей routerai.ru, проверено 2026-11-26. Меняются у провайдера - правь здесь, скрипт подхватит.",
+  "currency": "RUB",
+  "per_tokens": 1000000,
+  "checked_at": "2026-11-26",
+  "usd_to_rub": 80,
+  "models": {
+    "anthropic/claude-sonnet-5.5": {
+      "name": "Claude Sonnet 5.5",
+      "input": 214,
+      "output": 1070,
+      "cache_read": 10,
+      "cache_write": 267
+    },
+    "deepseek/deepseek-v4.1-flash-1017": {
+      "name": "DeepSeek V4.1 Flash 1017",
+      "input": 4.71,
+      "output": 11,
+      "cache_read": 0.82,
+      "cache_write": null
+    }
+  },
+  "_note": "cache_write: null означает, что цена записи в кэш у провайдера не задана - такие токены считаются по нулю, а не по цене входа. Для прочих провайдеров (opencode, omniroute, vyceai) цены не вписаны, поэтому в рублях считается только routerai."
+}
